@@ -42,4 +42,38 @@ pip install -r requirements.txt
 ├── requirements.txt
 └── README.md
 
+## 运行结果
+
+![daily chat.png](daily%20chat.png)
+
+## 进阶功能展示
+### 进阶A：上下文栈
+在场对话中保持角色设定和规则，对比普通截断策略效果更好。
+输入 '/ctx_test'查看对比演示。
+
+![ctx_demo.png](ctx_demo.png)
+
+### 进阶B：工具调用
+Agent模式支持计算机工具，模型会自动判断是否需要调用工具并返回精确结果。
+输入'/agent'进入，输入数学题（如'123*456'）体验。
+
+![agent_demo.png](agent_demo.png)
+
+### 进阶C:RAG知识库问答
+支持上传本地文档（txt/pdf），系统自动切分、向量化，基于原文回答。
+
+![rag_demo.png](rag_demo.png)
+
+
+**加载文档**
+'/rag load D:\\Python\\PythonProject1\test.txt'
+
+**提问**
+' /rag ask 公司的主要产品是什么？'
+
+**回答示例**
+'[来源: test.txt] 我们公司叫“未来科技”，主要产品是智能语音助手“小千”。这款产品可以帮助用户订机票、查天气、控制家电。
+公司位于北京市海淀区，成立于2020年。'
+
+
 
