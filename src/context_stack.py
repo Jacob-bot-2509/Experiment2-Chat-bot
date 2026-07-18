@@ -1,5 +1,5 @@
 import json
-from llm_client import chat_completion
+from src.llm_client import chat_completion
 
 def count_tokens(text):
     """简单用字符长度除以4估算token数"""

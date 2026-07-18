@@ -5,17 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7073f0e-3990-476c-8fbd-60c6d345764b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/agent_demo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ctx_demo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rag_demo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/agent_tools.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/context_stack.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/rag_engine.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test_history.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_persist.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_session manager.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/chat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/chat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/locustfile.py" beforeDir="false" afterPath="$PROJECT_DIR$/locustfile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/context_stack.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/context_stack.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +22,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -44,63 +42,85 @@
     &quot;accountId&quot;: &quot;c0f11105-a368-484b-9b1b-4dfef0fb4119&quot;
   }
 }</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/.env" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.gitignore" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.venv/Lib/site-packages/starlette/staticfiles.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Modelfile" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/README.md" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/backend.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/index.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/locustfile.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/main.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/sessions.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/__init__.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/agent_tools.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/chat.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/context_stack.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/llm_client.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/rag_engine.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/session_manager.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test.txt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/test_history.json" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0000000000978932" />
-      <entry key="MS500" value="1.0099690841071873" />
-      <entry key="S2" value="1.4120877784418244" />
-      <entry key="S5" value="2.2891268548464137" />
-      <entry key="S10" value="3.3681639228557123" />
-      <entry key="S30" value="6.151266721755935" />
-      <entry key="S60" value="8.21895113526429" />
-      <entry key="M2" value="10.459280252865605" />
-      <entry key="M5" value="17.92547156857613" />
-      <entry key="M10" value="36.061243159786606" />
-      <entry key="M15" value="54.673029484755574" />
-      <entry key="M30" value="113.49600953734515" />
-      <entry key="H1" value="242.24219026849693" />
-      <entry key="H2" value="434.78404396449343" />
-      <entry key="H4" value="621.5681906789196" />
-      <entry key="D1" value="867.4874101711542" />
-      <entry key="W1" value="921.5737370494658" />
+      <entry key="MS100" value="1.4358131760681636" />
+      <entry key="MS500" value="2.879455223667966" />
+      <entry key="S2" value="3.656571246499111" />
+      <entry key="S5" value="4.0041255117253876" />
+      <entry key="S10" value="5.7516315957540805" />
+      <entry key="S30" value="16.14166790662838" />
+      <entry key="S60" value="25.649753020534053" />
+      <entry key="M2" value="35.49059389021621" />
+      <entry key="M5" value="48.61014105402114" />
+      <entry key="M10" value="69.07926175417401" />
+      <entry key="M15" value="92.49988184281432" />
+      <entry key="M30" value="164.80811075906692" />
+      <entry key="H1" value="270.9268885434003" />
+      <entry key="H2" value="407.2649329130529" />
+      <entry key="H4" value="632.2232183169004" />
+      <entry key="D1" value="1276.256430233031" />
+      <entry key="W1" value="1496.9844726579008" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
       <entry key="MS500" value="0.0" />
       <entry key="S2" value="0.0" />
       <entry key="S5" value="0.0" />
-      <entry key="S10" value="9.595832710226494E-253" />
-      <entry key="S30" value="9.863420671234048E-85" />
-      <entry key="S60" value="9.931475680364319E-43" />
-      <entry key="M2" value="9.96679566655958E-22" />
-      <entry key="M5" value="4.0801179155677405E-9" />
-      <entry key="M10" value="7.327573195066599E-5" />
-      <entry key="M15" value="0.00205521210927638" />
-      <entry key="M30" value="0.061505170766127396" />
-      <entry key="H1" value="0.3468247073473959" />
-      <entry key="H2" value="0.8304826196632386" />
-      <entry key="H4" value="1.2878605813107122" />
-      <entry key="D1" value="1.8583456343812699" />
-      <entry key="W1" value="1.9791161886349222" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="4.466793118652738E-247" />
+      <entry key="S60" value="6.683407233109749E-124" />
+      <entry key="M2" value="2.5855098592381193E-62" />
+      <entry key="M5" value="2.3775948666859084E-25" />
+      <entry key="M10" value="5.589860564877027E-13" />
+      <entry key="M15" value="7.963826194012659E-9" />
+      <entry key="M30" value="1.230971543620374E-4" />
+      <entry key="H1" value="0.01739694191482174" />
+      <entry key="H2" value="0.2381772279520649" />
+      <entry key="H4" value="0.946498645936619" />
+      <entry key="D1" value="3.131621144246416" />
+      <entry key="W1" value="3.8621294517154996" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9592641194191698" />
-      <entry key="MS500" value="1.0015985524354114" />
-      <entry key="S2" value="1.3916620115910565" />
-      <entry key="S5" value="2.237006919347728" />
-      <entry key="S10" value="3.314792317258335" />
-      <entry key="S30" value="6.113932928360079" />
-      <entry key="S60" value="8.194317780940768" />
-      <entry key="M2" value="10.443686504494398" />
-      <entry key="M5" value="17.913229834617624" />
-      <entry key="M10" value="36.050359075821525" />
-      <entry key="M15" value="54.66360011213055" />
-      <entry key="M30" value="113.53623905650738" />
-      <entry key="H1" value="242.55495891218484" />
-      <entry key="H2" value="435.5808053284803" />
-      <entry key="H4" value="622.8318029184877" />
-      <entry key="D1" value="869.3402222327194" />
-      <entry key="W1" value="923.5520180369338" />
+      <entry key="MS100" value="1.3972097044155816" />
+      <entry key="MS500" value="2.8643981988098486" />
+      <entry key="S2" value="3.6518138222402845" />
+      <entry key="S5" value="4.002046975265294" />
+      <entry key="S10" value="5.750141927402882" />
+      <entry key="S30" value="16.140226494676792" />
+      <entry key="S60" value="25.648458510384355" />
+      <entry key="M2" value="35.48952565345313" />
+      <entry key="M5" value="48.60945154473235" />
+      <entry key="M10" value="69.07857309379963" />
+      <entry key="M15" value="92.49829188580374" />
+      <entry key="M30" value="164.80204556413295" />
+      <entry key="H1" value="270.93436873885406" />
+      <entry key="H2" value="407.4916477771861" />
+      <entry key="H4" value="633.1568192812159" />
+      <entry key="D1" value="1279.3821646555193" />
+      <entry key="W1" value="1500.8455763688637" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -112,30 +132,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.chat.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "D:/Python/PythonProject1",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.chat.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Python/PythonProject1&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件": [
-      "TEXT"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件&quot;: [
+      &quot;TEXT&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Python\PythonProject1" />

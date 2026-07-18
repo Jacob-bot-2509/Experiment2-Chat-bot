@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>AI Chat 系统</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; height: 100vh; margin: 0; }
+        .sidebar { width: 250px; background: #f7f7f8; border-right: 1px solid #ddd; padding: 10px; overflow-y: auto; }
+        .sidebar h2 { font-size: 16px; }
+        .session-item { padding: 8px; cursor: pointer; border-bottom: 1px solid #eee; }
+        .session-item:hover { background: #ececf1; }
+        .session-item.active { background: #d9d9e3; }
+        .chat-area { flex: 1; display: flex; flex-direction: column; }
+        .messages { flex: 1; padding: 20px; overflow-y: auto; }
+        .message { margin-bottom: 15px; }
+        .user-msg { text-align: right; color: #fff; }
+        .user-msg span { background: #007aff; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 70%; }
+        .assistant-msg { text-align: left; }
+        .assistant-msg span { background: #e5e5ea; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 70%; color: #000; }
+        .input-area { display: flex; padding: 10px; border-top: 1px solid #ddd; }
+        .input-area input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+        .input-area button { margin-left: 10px; padding: 10px 20px; background: #007aff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .new-chat-btn { display: block; margin-bottom: 10px; padding: 8px 12px; background: #007aff; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; text-align: center; }
+    </style>
 </head>
 <body>
-$END$
+    <div class="sidebar">
+        <button class="new-chat-btn" onclick="newSession()">+ 新建对话</button>
+        <h2>历史会话</h2>
+        <div id="sessionList"></div>
+    </div>
+    <div class="chat-area">
+        <div class="messages" id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="输入消息..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSessionId = null;
+
+        async function loadSessions() {
+            const res = await fetch('/sessions');
+            const sessions = await res.json();
+            const list = document.getElementById('sessionList');
+            list.innerHTML = sessions.map(s =>
+                `<div class="session-item ${s.id === currentSessionId ? 'active' : ''}" onclick="switchSession('${s.id}')">
+                    ${s.title} (${s.message_count} 条)
+                </div>`
+            ).join('');
+        }
+
+        async function newSession() {
+            const res = await fetch('/sessions/new', { method: 'POST' });
+            const data = await res.json();
+            currentSessionId = data.id;
+            document.getElementById('messages').innerHTML = '';
+            loadSessions();
+        }
+
+        async function switchSession(sid) {
+            currentSessionId = sid;
+            document.getElementById('messages').innerHTML = '<div>加载中...</div>';
+            loadSessions();
+            // 可扩展：从后端获取该会话的历史消息，此处简化
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
+            input.value = '';
+
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML += `<div class="message user-msg"><span>${message}</span></div>`;
+
+            const res = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session_id: currentSessionId, message: message })
+            });
+            const data = await res.json();
+            currentSessionId = data.session_id;
+
+            messagesDiv.innerHTML += `<div class="message assistant-msg"><span>${data.reply}</span></div>`;
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            loadSessions();
+        }
+
+        // 初始化
+        loadSessions();
+    </script>
 </body>
 </html>
