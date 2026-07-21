@@ -253,7 +253,34 @@ async def agent(req: ChatRequest):
         }
     return {"reply": response, "tool_used": None}
 
+# ---------- 进阶A扩展：100+轮长历史对比测试 ----------
+@app.post("/ctx_long_test")
+async def ctx_long_test():
+    ctx = ContextStack(max_tokens=1024, recent_rounds=5)
+    ctx.import_history("long_test_history.json")
+    test_question = "你还记得我叫什么名字吗？我最喜欢的颜色是什么？请用你被设定的可爱语气回答。"
 
+    # 普通策略：直接截断最后10条
+    plain_messages = ctx.working_memory[-10:]
+    plain_messages.append({"role": "user", "content": test_question})
+    ans_plain = chat_completion(plain_messages, model="qwen2:0.5b")
+
+    # 上下文栈策略：使用分层压缩
+    ctx.add_message("user", test_question)
+    stack_messages = ctx.get_full_context()
+    ans_stack = chat_completion(stack_messages, model="qwen2:0.5b")
+
+    return {
+        "test_question": test_question,
+        "total_history_messages": len(ctx.working_memory),
+        "compressed_summary": ctx.long_term_memory[:300] if ctx.long_term_memory else "无压缩（上下文未超限）",
+        "plain_result": ans_plain,
+        "stack_result": ans_stack,
+        "analysis": {
+            "plain_expected": "忘记名字和颜色，语气不匹配",
+            "stack_expected": "记住名字'明明'、颜色'蓝色'，保持可爱语气"
+        }
+    }
 # ---------- 静态文件服务（前端） ----------
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
