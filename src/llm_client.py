@@ -12,7 +12,7 @@ client = OpenAI(
 def chat_completion(messages, model="deepseek-chat", temperature=0.7):
     try:
         response = client.chat.completions.create(
-            model="qwen2:0.5b",
+            model="qwen2:1.5b",
             messages=messages,
             temperature=temperature,
             stream=False

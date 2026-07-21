@@ -4,6 +4,7 @@ from rag_engine import RAGEngine
 rag_engine = RAGEngine()
 from session_manager import SessionManager
 from llm_client import chat_completion
+from agent_tools import calculate, get_current_time, get_date, get_weather
 
 def main():
     manager = SessionManager()
@@ -15,9 +16,9 @@ def main():
 
     while True:
         try:
-            user_input = input("\\\\\\\\n你: ").strip()
+            user_input = input("\n你: ").strip()
         except (EOFError, KeyboardInterrupt):
-            print("\\\\\\\\n再见！")
+            print("\n再见！")
             break
 
         if not user_input:
@@ -62,14 +63,14 @@ def main():
 
                 print("=== 普通策略（简单截断）回答 ===")
                 try:
-                   ans_plain = chat_completion(plain_messages, model="qwen2:0.5b")
+                   ans_plain = chat_completion(plain_messages, model="qwen2:1.5b")
                    print(ans_plain)
                 except Exception as e:
                    print(f"错误: {e}")
 
-                print("\\\\\\\\n=== 上下文栈策略回答 ===")
+                print("\n=== 上下文栈策略回答 ===")
                 try:
-                   ans_stack = chat_completion(stack_messages, model="qwen2:0.5b")
+                   ans_stack = chat_completion(stack_messages, model="qwen2:1.5b")
                    print(ans_stack)
                 except Exception as e:
                    print(f"错误: {e}")
@@ -80,23 +81,87 @@ def main():
                 agent_system = {"role": "system", "content": TOOLS_DESC}
                 while agent_mode:
                     try:
-                       user_input = input("\\\\\\\\n你(Agent): ").strip()
+                       user_input = input("\n你(Agent): ").strip()
                     except:
                        break
                     if user_input == "/exit_agent":
                        agent_mode = False
                        continue
                     msgs = [agent_system, {"role": "user", "content": user_input}]
+                    user_msg = user_input.strip()
+                    if any(kw in user_msg for kw in ["几点", "时间", "现在几", "当前时间"]):
+                        tool_result = get_current_time()
+                        print(f"[规则兜底-时间] {tool_result}")
+                        msgs.append(
+                            {"role": "user", "content": f"真实的当前时间是：{tool_result}。请用自然语言告诉用户。"})
+                        final_response = chat_completion(msgs, model="qwen2:0.5b")
+                        print(f"助手: {final_response}")
+                        continue
+
+                    if any(kw in user_msg for kw in ["几号", "日期", "今天是什么"]):
+                        tool_result = get_date()
+                        print(f"[规则兜底-日期] {tool_result}")
+                        msgs.append(
+                            {"role": "user", "content": f"真实的当前日期是：{tool_result}。请用自然语言告诉用户。"})
+                        final_response = chat_completion(msgs, model="qwen2:0.5b")
+                        print(f"助手: {final_response}")
+                        continue
+
+                    if any(kw in user_msg for kw in ["天气"]):
+                        # 提取城市名（简单方式）
+                        import re
+                        city_match = re.search(r'(北京|上海|广州|深圳|杭州|成都|武汉)', user_msg)
+                        city = city_match.group(1) if city_match else "北京"
+                        tool_result = get_weather(city)
+                        print(f"[规则兜底-天气] {tool_result}")
+                        msgs.append(
+                            {"role": "user", "content": f"{city}的真实天气是：{tool_result}。请用自然语言告诉用户。"})
+                        final_response = chat_completion(msgs, model="qwen2:0.5b")
+                        print(f"助手: {final_response}")
+                        continue
                     response = chat_completion(msgs, model="qwen2:0.5b")
-                    if "<<TOOL_CALL>>" in response:
-                       expr = response.split("<<TOOL_CALL>>")[1].strip()
-                       print(f"[工具调用] 计算: {expr}")
-                       tool_result = calculate(expr)
-                       print(f"[工具结果] {tool_result}")
-                       msgs.append({"role": "assistant", "content": response})
-                       msgs.append({"role": "user", "content": f"工具执行结果：{tool_result}，请根据此结果回答用户。"})
-                       final_response = chat_completion(msgs, model="qwen2:0.5b")
-                       print(f"助手: {final_response}")
+                    # 导入时间工具
+                    from agent_tools import calculate, get_current_time, get_date
+
+                    # 判断调用了哪个工具
+                    tool_name = None
+                    tool_result = None
+
+                    if "<<CALCULATE>>" in response or "<<TOOL_CALL>>" in response:
+                        if "<<CALCULATE>>" in response:
+                            expr = response.split("<<CALCULATE>>")[1].strip()
+                        else:
+                            expr = response.split("<<TOOL_CALL>>")[1].strip()
+                        tool_result = calculate(expr)
+                        tool_name = f"计算器({expr})"
+                    elif "<<GET_TIME>>" in response:
+                        tool_result = get_current_time()
+                        tool_name = "时间查询"
+                    elif "<<GET_DATE>>" in response:
+                        tool_result = get_date()
+                        tool_name = "日期查询"
+                    elif "<<GET_WEATHER>>" in response:
+                        city = response.split("<<GET_WEATHER>>")[1].strip()
+                        tool_result = get_weather(city)
+                        tool_name = f"天气查询({city})"
+
+                    if tool_result:
+                        print(f"[工具调用] {tool_name}: {tool_result}")
+                        msgs.append({"role": "assistant", "content": response})
+                        msgs.append({"role": "user",
+                                     "content": f"工具[{tool_name}]执行结果：{tool_result}，请用自然语言把这个结果告诉用户。"})
+                        final_response = chat_completion(msgs, model="qwen2:1.5b")
+                        print(f"助手: {final_response}")
+                    else:
+                        print(f"助手: {response}")
+
+                    if tool_result:
+                        print(f"[工具调用] {tool_name}: {tool_result}")
+                        msgs.append({"role": "assistant", "content": response})
+                        msgs.append({"role": "user",
+                                     "content": f"工具[{tool_name}]执行结果：{tool_result}，请用自然语言把这个结果告诉用户。"})
+                        final_response = chat_completion(msgs, model="qwen2:1.5b")
+                        print(f"助手: {final_response}")
                     else:
                        print(f"助手: {response}")
             elif user_input.startswith("/rag load"):
@@ -120,11 +185,11 @@ def main():
                         question = parts[2]
                         results = rag.search(question)
                         context = rag.format_context(results)
-                        prompt = f"基于以下参考资料回答问题，如果无法回答请说明。\\\\n\\\\n参考资料:\\\\n{context}\\\\n\\\\n问题: {question}\\\\n答案:"
+                        prompt = f"基于以下参考资料回答问题，如果无法回答请说明。\\n\\n参考资料:\\n{context}\\n\\n问题: {question}\\n答案:"
                         msgs = [{"role": "user", "content": prompt}]
-                        reply = chat_completion(msgs, model="qwen2:0.5b")
+                        reply = chat_completion(msgs, model="qwen2:1.5b")
                         print(f"助手: {reply}")
-                        print("\\\\n--- 检索到的原文块（来源） ---")
+                        print("\\n--- 检索到的原文块（来源） ---")
                         print(context)
                 else:
                     print("用法: /rag ask <问题>")

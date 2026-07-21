@@ -85,7 +85,33 @@ async def chat(req: ChatRequest):
     else:
         session = session_manager.new_session()
 
-    session.add_message("user", req.message)
+    # ========== 规则兜底：直接拦截时间/日期/天气请求 ==========
+    user_msg = req.message
+    direct_reply = None
+
+    if any(kw in user_msg for kw in ["几点", "时间", "现在几", "当前时间"]):
+        from src.agent_tools import get_current_time
+        direct_reply = f"当前真实时间是：{get_current_time()}"
+
+    elif any(kw in user_msg for kw in ["几号", "日期", "今天是什么", "星期几"]):
+        from src.agent_tools import get_date
+        direct_reply = f"当前真实日期是：{get_date()}"
+
+    elif any(kw in user_msg for kw in ["天气"]):
+        import re
+        from src.agent_tools import get_weather
+        city_match = re.search(r'(北京|上海|广州|深圳|杭州|成都|武汉)', user_msg)
+        city = city_match.group(1) if city_match else "北京"
+        direct_reply = f"{city}的天气是：{get_weather(city)}"
+
+    if direct_reply:
+        session.add_message("user", user_msg)
+        session.add_message("assistant", direct_reply)
+        return ChatResponse(session_id=session.id, reply=direct_reply, title=session.title)
+    # ========== 规则兜底结束 ==========
+
+    # 正常聊天流程
+    session.add_message("user", user_msg)
     reply = chat_completion(session.messages, model="qwen2:0.5b")
     session.add_message("assistant", reply)
     return ChatResponse(session_id=session.id, reply=reply, title=session.title)
@@ -134,7 +160,7 @@ async def rag_ask(req: RAGAskRequest):
         results = rag_engine.search(req.question)
         context = rag_engine.format_context(results)
         prompt = f"基于以下参考资料回答问题，如果无法回答请说明。\\\\n\\\\n参考资料:\\\\n{context}\\\\n\\\\n问题: {req.question}\\\\n答案:"
-        reply = chat_completion([{"role": "user", "content": prompt}], model="qwen2:0.5b")
+        reply = chat_completion([{"role": "user", "content": prompt}], model="qwen2:1.5b")
         return {"reply": reply, "sources": context}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -149,11 +175,11 @@ async def ctx_test():
 
     plain_messages = ctx.working_memory[-10:]
     plain_messages.append({"role": "user", "content": test_question})
-    ans_plain = chat_completion(plain_messages, model="qwen2:0.5b")
+    ans_plain = chat_completion(plain_messages, model="qwen2:1.5b")
 
     ctx.add_message("user", test_question)
     stack_messages = ctx.get_full_context()
-    ans_stack = chat_completion(stack_messages, model="qwen2:0.5b")
+    ans_stack = chat_completion(stack_messages, model="qwen2:1.5b")
 
     return {
         "plain": ans_plain,
@@ -165,15 +191,66 @@ async def ctx_test():
 # ---------- 进阶B：工具调用接口 ----------
 @app.post("/agent")
 async def agent(req: ChatRequest):
+    from src.agent_tools import TOOLS_DESC, calculate, get_current_time, get_weather
+
     msgs = [{"role": "system", "content": TOOLS_DESC}, {"role": "user", "content": req.message}]
-    response = chat_completion(msgs, model="qwen2:0.5b")
-    if "<<TOOL_CALL>>" in response:
-        expr = response.split("<<TOOL_CALL>>")[1].strip()
-        tool_result = calculate(expr)
-        msgs.append({"role": "assistant", "content": response})
-        msgs.append({"role": "user", "content": f"工具执行结果：{tool_result}，请根据此结果回答用户。"})
+    # 规则兜底：关键词直接触发工具调用（绕过不可靠的小模型）
+    user_msg = req.message
+    if any(kw in user_msg for kw in ["几点", "时间", "现在几"]):
+        from src.agent_tools import get_current_time
+        tool_result = get_current_time()
+        tool_name = "时间查询"
+        msgs.append({"role": "user", "content": f"真实的当前时间是：{tool_result}。请用自然语言告诉用户。"})
         final_response = chat_completion(msgs, model="qwen2:0.5b")
-        return {"reply": final_response, "tool_used": expr, "tool_result": tool_result}
+        return {"reply": final_response, "tool_used": tool_name, "tool_result": tool_result}
+
+    if any(kw in user_msg for kw in ["几号", "日期", "今天是什么"]):
+        from src.agent_tools import get_date
+        tool_result = get_date()
+        tool_name = "日期查询"
+        msgs.append({"role": "user", "content": f"真实的当前日期是：{tool_result}。请用自然语言告诉用户。"})
+        final_response = chat_completion(msgs, model="qwen2:0.5b")
+        return {"reply": final_response, "tool_used": tool_name, "tool_result": tool_result}
+
+    if any(kw in user_msg for kw in ["天气"]):
+        import re
+        from src.agent_tools import get_weather
+        city_match = re.search(r'(北京|上海|广州|深圳|杭州|成都|武汉)', user_msg)
+        city = city_match.group(1) if city_match else "北京"
+        tool_result = get_weather(city)
+        tool_name = f"天气查询({city})"
+        msgs.append({"role": "user", "content": f"{city}的真实天气是：{tool_result}。请用自然语言告诉用户。"})
+        final_response = chat_completion(msgs, model="qwen2:0.5b")
+        return {"reply": final_response, "tool_used": tool_name, "tool_result": tool_result}
+    # 规则兜底结束
+    response = chat_completion(msgs, model="qwen2:1.5b")
+
+    tool_result = None
+    tool_name = None
+
+    # 判断调用了哪个工具
+    if "<<CALCULATE>>" in response:
+        expr = response.split("<<CALCULATE>>")[1].strip()
+        tool_result = calculate(expr)
+        tool_name = "计算器"
+    elif "<<GET_TIME>>" in response:
+        tool_result = get_current_time()
+        tool_name = "时间查询"
+    elif "<<GET_WEATHER>>" in response:
+        city = response.split("<<GET_WEATHER>>")[1].strip()
+        tool_result = get_weather(city)
+        tool_name = f"天气查询({city})"
+
+    if tool_result:
+        msgs.append({"role": "assistant", "content": response})
+        msgs.append({"role": "user", "content": f"工具[{tool_name}]执行结果：{tool_result}，请根据此结果回答用户。"})
+        final_response = chat_completion(msgs, model="qwen2:1.5b")
+        return {
+            "reply": final_response,
+            "tool_used": tool_name,
+            "tool_result": tool_result,
+            "raw_llm_output": response
+        }
     return {"reply": response, "tool_used": None}
 
 

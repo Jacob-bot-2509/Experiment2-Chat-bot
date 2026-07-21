@@ -41,7 +41,7 @@ class ContextStack:
                 conversation_text = "\\\\\\\\n".join([f"{m['role']}: {m['content']}" for m in to_compress])
                 summary_prompt = f"请用一段简短的中文总结以下对话的核心内容，保留关键事件和决定：\\\\\\\\n{conversation_text}"
                 try:
-                    summary = chat_completion([{"role": "user", "content": summary_prompt}], model="qwen2:0.5b")
+                    summary = chat_completion([{"role": "user", "content": summary_prompt}], model="qwen2:1.5b")
                 except:
                     summary = "（早期对话摘要生成失败）"
                 self.long_term_memory = summary
