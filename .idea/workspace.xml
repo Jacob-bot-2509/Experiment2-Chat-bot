@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7073f0e-3990-476c-8fbd-60c6d345764b" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/ctx_long_test.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_long_history.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_long_history.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_long_history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/long_test_history.json" beforeDir="false" afterPath="$PROJECT_DIR$/long_test_history.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,23 +62,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.036146505781583" />
-      <entry key="MS500" value="1.5365259304261467" />
-      <entry key="S2" value="3.950255162820412" />
-      <entry key="S5" value="9.950339734787836" />
-      <entry key="S10" value="15.73880155022792" />
-      <entry key="S30" value="22.36464409637347" />
-      <entry key="S60" value="24.907307306266034" />
-      <entry key="M2" value="28.87938918172695" />
-      <entry key="M5" value="40.32510256021587" />
-      <entry key="M10" value="57.206411577805305" />
-      <entry key="M15" value="72.32368030371337" />
-      <entry key="M30" value="115.62609992100417" />
-      <entry key="H1" value="213.5809353980024" />
-      <entry key="H2" value="405.0863501743934" />
-      <entry key="H4" value="709.2274425508676" />
-      <entry key="D1" value="1612.935896099858" />
-      <entry key="W1" value="1954.2173406111153" />
+      <entry key="MS100" value="1.4985823893655998" />
+      <entry key="MS500" value="3.2166228499992084" />
+      <entry key="S2" value="6.37553757917015" />
+      <entry key="S5" value="11.739774878196986" />
+      <entry key="S10" value="18.537757763226217" />
+      <entry key="S30" value="33.952215753922275" />
+      <entry key="S60" value="45.77230951744069" />
+      <entry key="M2" value="59.288795309934336" />
+      <entry key="M5" value="79.71552118728555" />
+      <entry key="M10" value="94.53552748896028" />
+      <entry key="M15" value="101.90913299105108" />
+      <entry key="M30" value="115.11676275802331" />
+      <entry key="H1" value="156.6914391029069" />
+      <entry key="H2" value="295.16070925334833" />
+      <entry key="H4" value="588.0892087904688" />
+      <entry key="D1" value="1627.0224933191328" />
+      <entry key="W1" value="2057.808139767409" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -88,36 +87,36 @@
       <entry key="S5" value="0.0" />
       <entry key="S10" value="0.0" />
       <entry key="S30" value="0.0" />
-      <entry key="S60" value="8.146726231725394E-187" />
-      <entry key="M2" value="9.026903445316282E-94" />
-      <entry key="M5" value="6.21347984598982E-38" />
-      <entry key="M10" value="2.857587218187081E-19" />
-      <entry key="M15" value="5.091598146918724E-13" />
-      <entry key="M30" value="9.842698605427344E-7" />
-      <entry key="H1" value="0.0015556288904413312" />
-      <entry key="H2" value="0.07122242879295003" />
-      <entry key="H4" value="0.5175809324479413" />
-      <entry key="D1" value="2.831906619475901" />
-      <entry key="W1" value="3.807021738981103" />
+      <entry key="S60" value="2.0256877982611766E-230" />
+      <entry key="M2" value="1.4234214041789335E-115" />
+      <entry key="M5" value="1.1815518158949351E-46" />
+      <entry key="M10" value="1.246115888900509E-23" />
+      <entry key="M15" value="6.30802509521391E-16" />
+      <entry key="M30" value="3.4644462922583526E-8" />
+      <entry key="H1" value="2.9185411648440966E-4" />
+      <entry key="H2" value="0.030849397837569185" />
+      <entry key="H4" value="0.34063810214837426" />
+      <entry key="D1" value="2.6411805349511157" />
+      <entry key="W1" value="3.769289740169768" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.014822919035834" />
-      <entry key="MS500" value="1.5301205822082178" />
-      <entry key="S2" value="3.945465789301674" />
-      <entry key="S5" value="9.944927973993604" />
-      <entry key="S10" value="15.734378799011683" />
-      <entry key="S30" value="22.362512738543014" />
-      <entry key="S60" value="24.906082359490753" />
-      <entry key="M2" value="28.87856101930574" />
-      <entry key="M5" value="40.324516584505616" />
-      <entry key="M10" value="57.20593330862166" />
-      <entry key="M15" value="72.32307091637122" />
-      <entry key="M30" value="115.62469360829404" />
-      <entry key="H1" value="213.5797404704115" />
-      <entry key="H2" value="405.1525294790175" />
-      <entry key="H4" value="709.7368950498171" />
-      <entry key="D1" value="1615.7622504537728" />
-      <entry key="W1" value="1958.0233171190212" />
+      <entry key="MS100" value="1.4486176739685799" />
+      <entry key="MS500" value="3.1970472155230043" />
+      <entry key="S2" value="6.3664766990116" />
+      <entry key="S5" value="11.733203578142716" />
+      <entry key="S10" value="18.532569326392014" />
+      <entry key="S30" value="33.94891293725328" />
+      <entry key="S60" value="45.76998556771885" />
+      <entry key="M2" value="59.28723353519469" />
+      <entry key="M5" value="79.71461140822898" />
+      <entry key="M10" value="94.53492957835735" />
+      <entry key="M15" value="101.90867855040692" />
+      <entry key="M30" value="115.11644843315099" />
+      <entry key="H1" value="156.69107034051163" />
+      <entry key="H2" value="295.18929851687244" />
+      <entry key="H4" value="588.4244584903684" />
+      <entry key="D1" value="1629.6584889287128" />
+      <entry key="W1" value="2061.5763936898516" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -132,31 +131,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.chat.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Python/PythonProject1&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.chat.executor": "Run",
+    "Python.generate_long_history.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Python/PythonProject1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyIntegratedToolsModulesConfigurable"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件&quot;: [
-      &quot;TEXT&quot;
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/新建临时文件": [
+      "TEXT"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Python\PythonProject1" />
@@ -165,7 +165,7 @@
       <recent name="D:\Python\PythonProject1" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.generate_long_history">
     <configuration name="chat" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Chat-bot" />
       <option name="ENV_FILES" value="" />
@@ -190,8 +190,33 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="generate_long_history" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Chat-bot" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="false" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_long_history.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.generate_long_history" />
         <item itemvalue="Python.chat" />
       </list>
     </recent_temporary>

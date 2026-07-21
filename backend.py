@@ -260,8 +260,8 @@ async def ctx_long_test():
     ctx.import_history("long_test_history.json")
     test_question = "你还记得我叫什么名字吗？我最喜欢的颜色是什么？请用你被设定的可爱语气回答。"
 
-    # 普通策略：直接截断最后10条
-    plain_messages = ctx.working_memory[-10:]
+    # 普通策略：直接截断最后2条
+    plain_messages = ctx.working_memory[-2:]
     plain_messages.append({"role": "user", "content": test_question})
     ans_plain = chat_completion(plain_messages, model="qwen2:0.5b")
 
@@ -270,9 +270,13 @@ async def ctx_long_test():
     stack_messages = ctx.get_full_context()
     ans_stack = chat_completion(stack_messages, model="qwen2:0.5b")
 
+    import json
+    with open("long_test_history.json", "r", encoding="utf-8") as f:
+        total_msgs = len(json.load(f))
+
     return {
         "test_question": test_question,
-        "total_history_messages": len(ctx.working_memory),
+        "total_history_messages": total_msgs,  # 直接读文件总数
         "compressed_summary": ctx.long_term_memory[:300] if ctx.long_term_memory else "无压缩（上下文未超限）",
         "plain_result": ans_plain,
         "stack_result": ans_stack,

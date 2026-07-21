@@ -165,7 +165,7 @@ locust -f locustfile.py --host=http://localhost:8000
 
 **结论**：普通截断策略由于上下文窗口有限，在 100+ 轮对话后完全丢失了关键信息；而上下文栈通过分层压缩（系统提示层 + 摘要层 + 工作记忆层），在极长对话中仍能保持角色设定和关键记忆。
 
-![ctx_long_test.png](ctx_long_test.png)
+![ctx_long_test1.png](ctx_long_test1.png)
 
 ## 功能完成度
 
