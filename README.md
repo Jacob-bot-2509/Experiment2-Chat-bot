@@ -17,7 +17,7 @@
 1. 安装Ollama(https://ollama.com/download/windows)
 2. 拉取模型：
    ‘’‘bash
-   ollama pull qwen2:0.5b
+   ollama pull qwen2:1.5b
 
 ## 安装Python依赖
 pip install -r requirements.txt

@@ -285,10 +285,24 @@ async def ctx_long_test():
             "stack_expected": "记住名字'明明'、颜色'蓝色'，保持可爱语气"
         }
     }
-# ---------- 静态文件服务（前端） ----------
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
+@app.get("/sessions/{session_id}/messages")
+async def get_session_messages(session_id: str):
+    if session_id not in session_manager.sessions:
+        raise HTTPException(status_code=404, detail="会话不存在")
+    session = session_manager.sessions[session_id]
+    # 只返回必要的消息字段
+    return {
+        "session_id": session.id,
+        "title": session.title,
+        "messages": session.messages[-50:]   # 只返回最近50条，避免数据量过大
+    }
 
 @app.get("/")
 async def root():
     return FileResponse("frontend/index.html")
+
+# ---------- 静态文件服务（前端） ----------
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+

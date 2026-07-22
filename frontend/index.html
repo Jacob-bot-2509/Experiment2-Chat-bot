@@ -29,10 +29,6 @@
         <h2>历史会话</h2>
         <div id="sessionList"></div>
     </div>
-    <div style="padding: 10px; border-bottom: 1px solid #ddd; display: flex; gap: 10px;">
-       <button onclick="switchMode('chat')" id="chatModeBtn" style="padding: 5px 15px; background: #007aff; color: white; border: none; border-radius: 5px; cursor: pointer;">普通模式</button>
-       <button onclick="switchMode('agent')" id="agentModeBtn" style="padding: 5px 15px; background: #ccc; color: black; border: none; border-radius: 5px; cursor: pointer;">Agent模式</button>
-    </div>
     <div class="chat-area">
         <div class="messages" id="messages"></div>
         <div class="input-area">
@@ -43,15 +39,6 @@
 
     <script>
         let currentSessionId = null;
-        let currentMode = 'chat';
-
-        function switchMode(mode) {
-            currentMode = mode;
-            document.getElementById('chatModeBtn').style.background = mode === 'chat' ? '#007aff' : '#ccc';
-            document.getElementById('chatModeBtn').style.color = mode === 'chat' ? 'white' : 'black';
-            document.getElementById('agentModeBtn').style.background = mode === 'agent' ? '#007aff' : '#ccc';
-            document.getElementById('agentModeBtn').style.color = mode === 'agent' ? 'white' : 'black';
-        }
 
         async function loadSessions() {
             const res = await fetch('/sessions');
@@ -74,9 +61,29 @@
 
         async function switchSession(sid) {
             currentSessionId = sid;
-            document.getElementById('messages').innerHTML = '<div>加载中...</div>';
-            loadSessions();
-            // 可扩展：从后端获取该会话的历史消息，此处简化
+            const messagesDiv = document.getElementById('messages');
+            messagesDiv.innerHTML = '<div>正在加载历史消息...</div>';
+
+            try {
+                const res = await fetch(`/sessions/${sid}/messages`);
+                const data = await res.json();
+                // 渲染消息
+                messagesDiv.innerHTML = '';
+                for (const msg of data.messages) {
+                    const roleClass = msg.role === 'user' ? 'user-msg' : 'assistant-msg';
+                    const span = document.createElement('span');
+                    span.textContent = msg.content;
+                    const div = document.createElement('div');
+                    div.className = `message ${roleClass}`;
+                    div.appendChild(span);
+                    messagesDiv.appendChild(div);
+                }
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            } catch (err) {
+                messagesDiv.innerHTML = '<div style="color:red;">加载失败</div>';
+            }
+
+            loadSessions(); // 更新侧边栏高亮
         }
 
         async function sendMessage() {
@@ -88,68 +95,33 @@
             const messagesDiv = document.getElementById('messages');
             messagesDiv.innerHTML += `<div class="message user-msg"><span>${message}</span></div>`;
 
-            // 关键词判断：如果消息涉及时间、日期、天气、计算，自动走 Agent 接口
+            // 关键词判断：涉及时间、日期、天气、计算时自动走 Agent 接口
             const agentKeywords = ["几点", "时间", "日期", "几号", "星期几", "天气", "多少度", "温度", "计算", "等于", "乘以", "除以", "加上", "减去"];
             const needAgent = agentKeywords.some(k => message.includes(k));
             const apiUrl = needAgent ? '/agent' : '/chat';
 
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ session_id: currentSessionId, message: message })
-            });
-            const data = await res.json();
+            try {
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: currentSessionId, message: message })
+                });
+                const data = await res.json();
 
-            if (data.session_id) currentSessionId = data.session_id;
+                if (data.session_id) currentSessionId = data.session_id;
 
-             // 构建回复显示内容
-             let replyHtml = data.reply || '';
-             // 如果使用了工具，在回复下方显示工具调用信息
-             if (data.tool_used) {
-             replyHtml += `\\\\n\\\\n[工具调用：${data.tool_used} → ${data.tool_result}]`;
-             }
-             messagesDiv.innerHTML += `<div class="message assistant-msg"><span>${replyHtml}</span></div>`;
-             messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-             loadSessions();
-        }
-
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += `<div class="message user-msg"><span>${message}</span></div>`;
-
-            // 根据模式选择接口
-            const apiUrl = currentMode === 'agent' ? '/agent' : '/chat';
-
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ session_id: currentSessionId, message: message })
-            });
-            const data = await res.json();
-
-            if (data.session_id) currentSessionId = data.session_id;
-
-            messagesDiv.innerHTML += `<div class="message assistant-msg"><span>${data.reply}</span></div>`;
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            loadSessions();
-}
-
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += `<div class="message user-msg"><span>${message}</span></div>`;
-
-            const res = await fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ session_id: currentSessionId, message: message })
-            });
-            const data = await res.json();
-            currentSessionId = data.session_id;
-
-            messagesDiv.innerHTML += `<div class="message assistant-msg"><span>${data.reply}</span></div>`;
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            loadSessions();
+                let replyHtml = data.reply || '系统未返回回复';
+                if (data.tool_used) {
+                    replyHtml += `<br><br><small>[工具调用：${data.tool_used} → ${data.tool_result}]</small>`;
+                }
+                messagesDiv.innerHTML += `<div class="message assistant-msg"><span>${replyHtml}</span></div>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                if(!currentSessionId || data.title){
+                   loadSessions();
+                }
+            } catch (err) {
+                messagesDiv.innerHTML += `<div class="message assistant-msg"><span style="color:red;">请求失败: ${err.message}</span></div>`;
+            }
         }
 
         // 初始化
